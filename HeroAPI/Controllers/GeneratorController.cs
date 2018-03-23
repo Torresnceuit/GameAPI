@@ -115,9 +115,9 @@ namespace PlayersAPI.Controllers
         [Route("drawfixture/{id}")]
         public IHttpActionResult DrawFixture(string id)
         {
-			List<Round> lRounds = db.Rounds.Where(h => h.TourId == id).ToList();
+            List<Round> lRounds = db.Rounds.Where(h => h.TourId == id).ToList();
             List<Match> lMatches = db.Matches.Where(h => h.TourId == id).ToList();
-            List<Rank> lRanks = db.Ranks.Where(h => h.TourId == id).ToList(); 
+            List<Rank> lRanks = db.Ranks.Where(h => h.TourId == id).ToList();
             // delete all data for the tournament first			
             foreach (Rank rank in lRanks)
             {
@@ -143,69 +143,69 @@ namespace PlayersAPI.Controllers
 
             int[,] results = GenerateRoundRobin(num_teams);
             int n = 0;
-			// n = 2, each team plays againts others 2 times: Home and Away
+            // n = 2, each team plays againts others 2 times: Home and Away
             while (n < 2)
             {
-				
+
                 for (int rounds = 0; rounds < num_teams - 1; rounds++)
                 {
-					// Create a round
+                    // Create a round
                     Round round = new Round();
                     round.Name = (num_teams - 1) * n + rounds + 1;
                     round.TourId = id;
-					// add to Rounds db
+                    // add to Rounds db
                     db.Rounds.Add(round);
                     db.SaveChanges();
-					// each round, we generate pairs of teams
+                    // each round, we generate pairs of teams
                     for (int teams = 0; teams < num_teams; teams++)
                     {
-						// Create a new match
+                        // Create a new match
                         Match match = new Match();
                         match.TourId = id;
-						// fist leg round
+                        // fist leg round
                         if (n == 0)
                         {
-							// assign Home team
+                            // assign Home team
                             match.HomeId = lTeams.ElementAt(teams).Id;
                             if (results[teams, rounds] >= 0)
-								// assign Away team
+                                // assign Away team
                                 match.AwayId = lTeams.ElementAt(results[teams, rounds]).Id;
                         }
-						 // 2nd leg round
+                        // 2nd leg round
                         else
                         {
-							// assgin Away team
+                            // assgin Away team
                             match.AwayId = lTeams.ElementAt(teams).Id;
                             if (results[teams, rounds] >= 0)
-								// assign Home team
+                                // assign Home team
                                 match.HomeId = lTeams.ElementAt(results[teams, rounds]).Id;
                         }
                         match.RoundId = round.Id;
-						// check if match does not exist
+                        // check if match does not exist
                         if (db.Matches
                             .Where(h => (h.HomeId == match.HomeId || h.HomeId == match.AwayId) && h.RoundId == match.RoundId)
                             .ToList().Count == 0)
                         {
-							// add match to Matches db
+                            // add match to Matches db
                             db.Matches.Add(match);
                             db.SaveChanges();
 
                         }
-                    }                   
+                    }
                 }
                 n++;
             }
-			// return 200
+            // return 200
             return Ok();
         }
-        
+
         // Generate Round Robin Algorithm
         public int[,] GenerateRoundRobin(int num_teams)
         {
-			// Even number of teams
+            // Even number of teams
             if (num_teams % 2 == 0)
                 return GenerateRoundRobinEven(num_teams);
-			// Odd number of teams
+            // Odd number of teams
             else
                 return GenerateRoundRobinOdd(num_teams);
         }

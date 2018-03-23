@@ -300,7 +300,6 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\League.cs" />
     <Compile Include="Models\Match.cs" />
-    <Compile Include="Models\NationLeague.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\PlayerViewModel.cs" />
