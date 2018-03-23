@@ -24,8 +24,6 @@ namespace PlayersAPI.Controllers
         public IHttpActionResult GenerateRank(string id)
         {
             List<Team> teams = db.Teams.Where(h => h.TourId == id).ToList();
-
-
             foreach (Team team in teams)
             {
                 var teamId = team.Id;
@@ -46,91 +44,66 @@ namespace PlayersAPI.Controllers
                 existRank.Reset();
                 foreach (Match match in matches)
                 {
-
-
-
-
-
                     //Team is Home Team
                     if (match.HomeId == teamId)
                     {
+                        // if won, points + 3
                         if (match.HomeScore > match.AwayScore)
                         {
-
-
                             existRank.Won += 1;
                             existRank.Goals += match.HomeScore;
                             existRank.Concede += match.AwayScore;
                             existRank.Points += 3;
-
                         }
+                        // if lost, points not changed
                         if (match.HomeScore < match.AwayScore)
                         {
-
-
                             existRank.Lost += 1;
                             existRank.Goals += match.HomeScore;
                             existRank.Concede += match.AwayScore;
-
-
                         }
+                        // if draw, points + 1
                         if (match.HomeScore == match.AwayScore)
                         {
-
-
                             existRank.Draw += 1;
                             existRank.Goals += match.HomeScore;
                             existRank.Concede += match.AwayScore;
                             existRank.Points += 1;
-
                         }
-
 
                     }
                     if (match.AwayId == teamId)
                     {
+                        // if won, +3 to points
                         if (match.AwayScore > match.HomeScore)
                         {
-
-
                             existRank.Won += 1;
                             existRank.Goals += match.AwayScore;
                             existRank.Concede += match.HomeScore;
                             existRank.Points += 3;
 
                         }
+                        // if lost, points not changed
                         if (match.AwayScore < match.HomeScore)
                         {
-
-
                             existRank.Lost += 1;
                             existRank.Goals += match.AwayScore;
                             existRank.Concede += match.HomeScore;
-
-
                         }
+                        // if draw, +1 to points
                         if (match.HomeScore == match.AwayScore)
                         {
-
-
                             existRank.Draw += 1;
                             existRank.Goals += match.AwayScore;
                             existRank.Concede += match.HomeScore;
                             existRank.Points += 1;
-
                         }
-
-
                     }
-
                     existRank.Games = matches.Count;
-                  
-
                 }
             }
-
             db.SaveChanges();
-
+            // return 200
             return Ok();
         }
         /// <summary>
