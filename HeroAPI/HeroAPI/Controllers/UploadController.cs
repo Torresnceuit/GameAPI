@@ -24,7 +24,8 @@ namespace PlayersAPI.Controllers
             var httpRequest = HttpContext.Current.Request;
             if (httpRequest.Files.Count > 0)
             {
-                int filecount = httpRequest.Files.Count; // get upload file count
+                // get upload file count
+                int filecount = httpRequest.Files.Count; 
                 //show file count in custom response header
                 HttpContext.Current.Response.AppendHeader("FileCount", filecount.ToString());
                 var docfiles = new List<string>();
@@ -33,9 +34,12 @@ namespace PlayersAPI.Controllers
                     var postedFile = httpRequest.Files[file];
                     string imgID = Guid.NewGuid().ToString();
                     String[] substring = postedFile.FileName.Split('.');
-                    var filePath = HttpContext.Current.Server.MapPath("~/Content/Upload/" + imgID + '.' + substring[substring.Length - 1]);
-                    postedFile.SaveAs(filePath); // save file to specific file path.
-                    docfiles.Add("/Content/Upload/" + imgID + '.' + substring[substring.Length - 1]); // add file url on server to response
+                    var filePath = HttpContext.Current.Server
+                        .MapPath("~/Content/Upload/" + imgID + '.' + substring[substring.Length - 1]);
+                    // save file to specific file path.
+                    postedFile.SaveAs(filePath); 
+                    // add file url on server to response
+                    docfiles.Add("/Content/Upload/" + imgID + '.' + substring[substring.Length - 1]); 
                 }
                 result = Request.CreateResponse(HttpStatusCode.Created, docfiles);
             }

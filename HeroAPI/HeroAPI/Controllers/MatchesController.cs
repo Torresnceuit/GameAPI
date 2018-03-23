@@ -21,10 +21,7 @@ namespace PlayersAPI.Controllers
         [Route("GetAll")]
         public List<Match> Get()
         {
-
-
             return db.Matches.ToList();
-
         }
         /// <summary>
         /// Get all matches by roundId
@@ -34,12 +31,9 @@ namespace PlayersAPI.Controllers
         [Route("GetAllByRound/{id}")]
         public List<Match> GetByRound(string id)
         {
-
-
             return db.Matches
                 .Where(h => h.RoundId == id)
                 .ToList();
-
         }
 
         /// <summary>
@@ -64,23 +58,20 @@ namespace PlayersAPI.Controllers
         [Route("Update")]
         public Match Post(Match match)
         {
-            //Console.WriteLine(hero.Positions.ToString());
+            // find a match 
             var existMatch = db.Matches.Where(h => h.Id == match.Id).FirstOrDefault();
             if (existMatch == null)
             {
+                // if not exist, create a new one
                 existMatch = new Match();
                 existMatch.Id = match.Id ?? Guid.NewGuid().ToString();
+                // add to Matches db
                 db.Matches.Add(existMatch);
             }
-
-
+            // update and save
             existMatch.Update(match);
-
-            //existHero.Age = hero.Age;
-
             db.SaveChanges();
-
-
+            // return updated match
             return existMatch;
         }
 
@@ -91,31 +82,22 @@ namespace PlayersAPI.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("UpdateAll")]
-        public IHttpActionResult UpdateAll(List<Match> match)
+        public IHttpActionResult UpdateAll(List<Match> matches)
         {
-            //Console.WriteLine(hero.Positions.ToString());
-            for(int i = 0; i< match.Count; i++)
+            foreach(Match match in matches)
             {
-                var matchId = match[i].Id;
+                var matchId = match.Id;
                 var existMatch = db.Matches.Where(h => h.Id == matchId).FirstOrDefault();
                 if (existMatch == null)
                 {
-                    /*existMatch = new Match();
-                    existMatch.Id = match[i].Id ?? Guid.NewGuid().ToString();
-                    db.Matches.Add(existMatch);*/
+                   // return 404 NOT FOUND
                     return NotFound();
-                    //return;
                 }
-
-
-                existMatch.Update(match[i]);
+                // update a match
+                existMatch.Update(match);
             }
-            
-
-            //existHero.Age = hero.Age;
-
             db.SaveChanges();
-
+            // return 200 OK
             return Ok();
 
             
@@ -132,13 +114,16 @@ namespace PlayersAPI.Controllers
         [Route("Delete")]
         public IHttpActionResult Delete(string id)
         {
+            // find a tem matches by id
             var existTeam = db.Teams.Where(h => h.Id == id).FirstOrDefault();
             if (existTeam == null)
+                // if null, return 404 NOT FOUND
                 return NotFound();
-
+            // remove from database
             db.Teams.Remove(existTeam);
             db.SaveChanges();
-            return Ok(db.Teams.ToList());
+            //return 200 OK
+            return Ok();
         }
     }
 }

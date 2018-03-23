@@ -13,23 +13,20 @@ namespace PlayersAPI.Models
         public int AwayScore { get; set; }
         public bool IsDone   { get; set; }
 
-        [ForeignKey("homeTeam")]
+        [ForeignKey(nameof(homeTeam))]
         public string HomeId { get; set; }
-
-        [ForeignKey("awayTeam")]
+        [ForeignKey(nameof(awayTeam))]
         public string AwayId { get; set; }
-
-        [ForeignKey("Round")]
+        [ForeignKey(nameof(Round))]
         public string RoundId { get; set; }
-
-        [ForeignKey("Tour")]
+        [ForeignKey(nameof(Tour))]
         public string TourId { get; set; }
 
         public virtual Team homeTeam { get; set; }
         public virtual Team awayTeam { get; set; }
         public virtual Tournament Tour { get; set; }
         public virtual Round Round { get; set; }
-
+        // update members
         public void Update(Match match)
         {
             HomeScore = match.HomeScore;

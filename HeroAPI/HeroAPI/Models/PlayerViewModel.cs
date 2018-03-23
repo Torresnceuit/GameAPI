@@ -20,19 +20,6 @@ namespace PlayersAPI.Models
 
         public string TeamId { get; set; }
         public string Avatar { get; set; }
-
-
-        /*public static PlayerViewModel operator=(PlayerViewModel obj){
-            PlayerViewModel view = new PlayerViewModel();
-            view.Name = obj.Name;
-            view.Age = obj.Age;
-            view.Positions = obj.Positions;
-            view.Nationality = obj.Nationality;
-            view.Number = obj.Number;
-            view.UserId = obj.UserId;
-            view.Avatar = obj.Avatar;
-            return view;
-        }*/
         
         public PlayerViewModel (Player player)
         {
@@ -45,11 +32,6 @@ namespace PlayersAPI.Models
             Number = player.Number;
             TeamId = player.TeamId;
             Avatar = player.Avatar;
-
-        }
-        public PlayerViewModel()
-        {
-            //Positions = new List<string>();
 
         }
 

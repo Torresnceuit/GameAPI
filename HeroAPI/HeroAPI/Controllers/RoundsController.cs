@@ -21,10 +21,7 @@ namespace PlayersAPI.Controllers
         [Route("GetAll")]
         public List<Round> Get()
         {
-
-
             return db.Rounds.ToList();
-
         }
         /// <summary>
         /// Get all rounds by tournament Id
@@ -34,13 +31,10 @@ namespace PlayersAPI.Controllers
         [Route("GetAllByTour/{id}")]
         public List<Round> GetByTour(string id)
         {
-
-
             return db.Rounds
                 .Where(h => h.TourId == id)
                 .OrderBy(h => h.Name)
                 .ToList();
-
         }
 
         /// <summary>
@@ -52,9 +46,6 @@ namespace PlayersAPI.Controllers
         [Route("GetById/{id}")]
         public Round Get(string id)
         {
-            //Console.WriteLine("id");
-            //Guid playerID = new Guid(id);
-            //string userId = User.Identity.GetUserId();
             return db.Rounds
                 .Where(h => h.Id == id).FirstOrDefault();
         }
@@ -67,23 +58,20 @@ namespace PlayersAPI.Controllers
         [Route("Update")]
         public Round Post(Round round)
         {
-            //Console.WriteLine(hero.Positions.ToString());
+            // find round in Rounds db
             var existRound = db.Rounds.Where(h => h.Id == round.Id).FirstOrDefault();
             if (existRound == null)
             {
+                // if not exist, create a new one
                 existRound = new Round();
                 existRound.Id = round.Id ?? Guid.NewGuid().ToString();
+                // add to Rounds db
                 db.Rounds.Add(existRound);
             }
-
-
+            // update a round
             existRound.Update(round);
-
-            //existHero.Age = hero.Age;
-
             db.SaveChanges();
-
-
+            // return the updated round
             return existRound;
         }
 
@@ -98,13 +86,16 @@ namespace PlayersAPI.Controllers
         [Route("Delete")]
         public IHttpActionResult Delete(string id)
         {
+            // find a round matches id
             var existRound = db.Rounds.Where(h => h.Id == id).FirstOrDefault();
             if (existRound == null)
+                // return 404 NOT FOUND
                 return NotFound();
-
+            // remove from Rounds db
             db.Rounds.Remove(existRound);
             db.SaveChanges();
-            return Ok(db.Rounds.ToList());
+            // return 200 OK
+            return Ok();
         }
     }
 }

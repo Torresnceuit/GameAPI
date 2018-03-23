@@ -23,10 +23,7 @@ namespace PlayersAPI.Controllers
         [Route("GetAll")]
         public List<League> Get()
         {
-            //string userId = User.Identity.GetUserId();
-
             return db.Leagues.ToList();
-
         }
 
         /// <summary>
@@ -38,9 +35,6 @@ namespace PlayersAPI.Controllers
         [Route("GetById/{id}")]
         public League Get(string id)
         {
-            Console.WriteLine("id");
-            //Guid playerID = new Guid(id);
-            //string userId = User.Identity.GetUserId();
             return db.Leagues
                 .Where(h => h.Id == id).FirstOrDefault();
         }
@@ -53,23 +47,21 @@ namespace PlayersAPI.Controllers
         [Route("Update")]
         public League Post(League league)
         {
-            //Console.WriteLine(hero.Positions.ToString());
+            // Find a league in database
             var existLeague = db.Leagues.Where(h => h.Id == league.Id).FirstOrDefault();
             if (existLeague == null)
             {
+                // if not exist, create a new League
                 existLeague = new League();
                 existLeague.Id = league.Id ?? Guid.NewGuid().ToString();
+                // add to Leagues db
                 db.Leagues.Add(existLeague);
             }
-
-
+            //Update league and save
             existLeague.Update(league);
-
-            //existHero.Age = hero.Age;
-
             db.SaveChanges();
             
-
+            // return the updated league
             return existLeague;
         }
 
@@ -84,13 +76,16 @@ namespace PlayersAPI.Controllers
         [Route("Delete/{id}")]
         public IHttpActionResult Delete(string id)
         {
+            // find league in database
             var existLeague = db.Leagues.Where(h => h.Id == id).FirstOrDefault();
             if (existLeague == null)
+                //return 404 NOT FOUND 
                 return NotFound();
-
+            // remove league from database
             db.Leagues.Remove(existLeague);
             db.SaveChanges();
-            return Ok(db.Leagues.ToList());
+            // return 200 OK
+            return Ok();
         }
 
     }

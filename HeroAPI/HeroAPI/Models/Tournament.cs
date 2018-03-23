@@ -15,11 +15,11 @@ namespace PlayersAPI.Models
         public string Logo { get; set; }
         public bool IsDone { get; set; }
 
-        [ForeignKey("League")]
+        [ForeignKey(nameof(League))]
         public string LeagueId { get; set; }
 
         public virtual League League { get; set; }
-
+        // update members
         public void Update(Tournament tour)
         {
             Name = tour.Name;

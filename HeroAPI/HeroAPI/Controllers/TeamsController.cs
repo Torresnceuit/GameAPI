@@ -22,10 +22,7 @@ namespace PlayersAPI.Controllers
         [Route("GetAll")]
         public List<Team> Get()
         {
-
-
             return db.Teams.ToList();
-
         }
         /// <summary>
         /// Get all teams by tournament Id
@@ -35,12 +32,9 @@ namespace PlayersAPI.Controllers
         [Route("GetAllByTour/{id}")]
         public List<Team> GetByTour(string id)
         {
-
-
             return db.Teams
                 .Where(h => h.TourId == id)
                 .ToList();
-
         }
 
         /// <summary>
@@ -52,9 +46,6 @@ namespace PlayersAPI.Controllers
         [Route("GetById/{id}")]
         public Team Get(string id)
         {
-            //Console.WriteLine("id");
-            //Guid playerID = new Guid(id);
-            //string userId = User.Identity.GetUserId();
             return db.Teams
                 .Where(h => h.Id == id).FirstOrDefault();
         }
@@ -67,23 +58,20 @@ namespace PlayersAPI.Controllers
         [Route("Update")]
         public Team Post(Team team)
         {
-            //Console.WriteLine(hero.Positions.ToString());
+            // find a team in Teams db
             var existTeam = db.Teams.Where(h => h.Id == team.Id).FirstOrDefault();
             if (existTeam == null)
             {
+                // if not exist, create a new one
                 existTeam = new Team();
                 existTeam.Id = team.Id ?? Guid.NewGuid().ToString();
+                // add to Teams db
                 db.Teams.Add(existTeam);
             }
-
-
+            // update a team
             existTeam.Update(team);
-
-            //existHero.Age = hero.Age;
-
             db.SaveChanges();
-
-
+            // return updated team
             return existTeam;
         }
 
@@ -98,13 +86,16 @@ namespace PlayersAPI.Controllers
         [Route("Delete/{id}")]
         public IHttpActionResult Delete(string id)
         {
+            // find team in Teams db matches id
             var existTeam = db.Teams.Where(h => h.Id == id).FirstOrDefault();
             if (existTeam == null)
+                // return 404 NOT FOUND
                 return NotFound();
-
+            // remove from Teams db
             db.Teams.Remove(existTeam);
             db.SaveChanges();
-            return Ok(db.Teams.ToList());
+            // return 200 OK
+            return Ok();
         }
     }
 }

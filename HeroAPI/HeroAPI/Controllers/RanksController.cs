@@ -20,10 +20,7 @@ namespace PlayersAPI.Controllers
         [Route("GetAll")]
         public List<Rank> Get()
         {
-
-
             return db.Ranks.ToList();
-
         }
         /// <summary>
         /// Get all ranks by tournament Id
@@ -33,13 +30,10 @@ namespace PlayersAPI.Controllers
         [Route("GetAllByTour/{id}")]
         public List<Rank> GetByTour(string id)
         {
-
-
             return db.Ranks
                 .Where(h => h.TourId == id)
                 .OrderByDescending(l=>l.Points)
                 .ToList();
-
         }
 
         /// <summary>
@@ -50,10 +44,7 @@ namespace PlayersAPI.Controllers
         [HttpGet]
         [Route("GetById/{id}")]
         public Rank Get(string id)
-        {
-            //Console.WriteLine("id");
-            //Guid playerID = new Guid(id);
-            //string userId = User.Identity.GetUserId();
+        {            
             return db.Ranks
                 .Where(h => h.Id == id).FirstOrDefault();
         }
@@ -66,23 +57,20 @@ namespace PlayersAPI.Controllers
         [Route("Update")]
         public Rank Post(Rank rank)
         {
-            //Console.WriteLine(hero.Positions.ToString());
+            // find a rank in db
             var existRank = db.Ranks.Where(h => h.Id == rank.Id).FirstOrDefault();
             if (existRank == null)
             {
+                // if not exist, create a new one
                 existRank = new Rank();
                 existRank.Id = rank.Id ?? Guid.NewGuid().ToString();
+                // add to Ranks db
                 db.Ranks.Add(existRank);
             }
-
-
+            // update the rank
             existRank.Update(rank);
-
-            //existHero.Age = hero.Age;
-
             db.SaveChanges();
-
-
+            // return updated rank
             return existRank;
         }
 
@@ -97,13 +85,16 @@ namespace PlayersAPI.Controllers
         [Route("Delete")]
         public IHttpActionResult Delete(string id)
         {
+            // find a rank in Ranks db
             var existRank = db.Ranks.Where(h => h.Id == id).FirstOrDefault();
             if (existRank == null)
+                // return 404 NOT FOUND
                 return NotFound();
-
+            // remove from Ranks db
             db.Ranks.Remove(existRank);
             db.SaveChanges();
-            return Ok(db.Ranks.ToList());
+            // return 200 OK
+            return Ok();
         }
     }
 }
