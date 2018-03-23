@@ -18,12 +18,12 @@ namespace PlayersAPI.Models
         public string Nationality { get; set; }
         public int Number { get; set; }
 
-        [ForeignKey("Team")]
+        [ForeignKey(nameof(Team))]
         public string TeamId { get; set; }
         public string Avatar { get; set; }
 
         public virtual Team Team { get; set; }
-
+        // update members
         public void Update(PlayerViewModel player)
         {
             Name = player.Name;

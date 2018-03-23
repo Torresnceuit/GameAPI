@@ -78,24 +78,25 @@ namespace PlayersAPI.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("Update")]
-        public PlayerViewModel Post(PlayerViewModel hero)
+        public PlayerViewModel Post(PlayerViewModel player)
         {
-            Console.WriteLine(hero.Positions.ToString());
-            var existHero = db.Players.Where(h => h.Id == hero.Id).FirstOrDefault();
-            if (existHero == null)
+            Console.WriteLine(player.Positions.ToString());
+            // query for player exists or not
+            var existPlayer = db.Players.Where(h => h.Id == player.Id).FirstOrDefault();
+            if (existPlayer == null)
             {
-                existHero = new Player();
-                existHero.Id = hero.Id ?? Guid.NewGuid().ToString();
-                db.Players.Add(existHero);
+                // if not exist, create a new player
+                existPlayer = new Player();
+                existPlayer.Id = player.Id ?? Guid.NewGuid().ToString();
+                // add to Players db
+                db.Players.Add(existPlayer);
             }
             
-
-            existHero.Update(hero);
-            
-            //existHero.Age = hero.Age;
+            // update player
+            existPlayer.Update(player);
 
             db.SaveChanges();
-            PlayerViewModel newView = new PlayerViewModel(existHero);
+            PlayerViewModel newView = new PlayerViewModel(existPlayer);
 
             return newView ;
         }
@@ -111,13 +112,16 @@ namespace PlayersAPI.Controllers
         [Route("Delete/{id}")]
         public IHttpActionResult Delete(string id)
         {
+            // find player matchs id
             var existHero = db.Players.Where(h => h.Id == id).FirstOrDefault();
             if (existHero == null)
+                // return 404 NOT FOUND
                 return NotFound();     
-            
+            // remove player from Players database
             db.Players.Remove(existHero);          
             db.SaveChanges();
-            return Ok(db.Players.ToList());
+            // return 200 OK
+            return Ok();
         }
 
         /// <summary>
@@ -130,21 +134,27 @@ namespace PlayersAPI.Controllers
         {
             HttpResponseMessage result = null;
             var httpRequest = HttpContext.Current.Request;
+            // check number of files
             if (httpRequest.Files.Count > 0)
             {
-                int filecount = httpRequest.Files.Count; // get upload file count
+                // get upload file count
+                int filecount = httpRequest.Files.Count; 
                 //show file count in custom response header
                 HttpContext.Current.Response.AppendHeader("FileCount", filecount.ToString());
                 var docfiles = new List<string>();
                 foreach (string file in httpRequest.Files)
                 {
                     var postedFile = httpRequest.Files[file];
+                    // create GUID for image
                     string imgID = Guid.NewGuid().ToString();
                     String[] substring = postedFile.FileName.Split('.');
                     var filePath = HttpContext.Current.Server.MapPath("~/Content/Upload/" + imgID+'.'+substring[substring.Length-1]);
-                    postedFile.SaveAs(filePath); // save file to specific file path.
+                    // save file to specific file path.
+                    postedFile.SaveAs(filePath); 
+                    // add the url to file
                     docfiles.Add("/Content/Upload/" + imgID+'.'+ substring[substring.Length - 1]);
                 }
+                // create response contains file url
                 result = Request.CreateResponse(HttpStatusCode.Created, docfiles);
             }
             else

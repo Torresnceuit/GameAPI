@@ -8,10 +8,9 @@ namespace PlayersAPI.Models
     public class League
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
-        public string Name { get; set; }
-        
+        public string Name { get; set; } 
         public string Logo { get; set; }
-
+        // update members
         public void Update(League league)
         {
             Name = league.Name;

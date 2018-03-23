@@ -12,10 +12,11 @@ namespace PlayersAPI.Models
         public int Name { get; set; }
         
         public bool IsDone { get; set; }
-        [ForeignKey("Tournament")]
+        [ForeignKey(nameof(Tournament))]
         public string TourId { get; set; }
         public virtual Tournament Tournament { get; set; }
 
+        // update round member
         public void Update(Round round)
         {
             if(round.Name>0)
@@ -25,7 +26,6 @@ namespace PlayersAPI.Models
 
             IsDone = round.IsDone;
             
-
         }
     }
 }

@@ -9,9 +9,9 @@ namespace PlayersAPI.Models
     public class Rank
     {
         public string   Id        { get; set; } = Guid.NewGuid().ToString();
-        [ForeignKey("Tour")]
+        [ForeignKey(nameof(Tour))]
         public string   TourId    { get; set; }
-        [ForeignKey("Team")]
+        [ForeignKey(nameof(Team))]
         public string   TeamId    { get; set; }
         public int      Games     { get; set; }
         public int      Won       { get; set; }
@@ -24,6 +24,7 @@ namespace PlayersAPI.Models
         public virtual Tournament Tour { get; set; }
         public virtual Team       Team { get; set; }
 
+        // update all rank members
         public void Update(Rank rank)
         {
             TourId = rank.TourId;
@@ -36,7 +37,7 @@ namespace PlayersAPI.Models
             Points = rank.Points;
 
         }
-
+        // reset all members' value
         public void Reset()
         {
             Games = 0;

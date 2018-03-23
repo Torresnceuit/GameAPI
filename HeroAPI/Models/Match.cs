@@ -15,13 +15,10 @@ namespace PlayersAPI.Models
 
         [ForeignKey(nameof(homeTeam))]
         public string HomeId { get; set; }
-
         [ForeignKey(nameof(awayTeam))]
         public string AwayId { get; set; }
-
         [ForeignKey(nameof(Round))]
         public string RoundId { get; set; }
-
         [ForeignKey(nameof(Tour))]
         public string TourId { get; set; }
 
@@ -29,7 +26,7 @@ namespace PlayersAPI.Models
         public virtual Team awayTeam { get; set; }
         public virtual Tournament Tour { get; set; }
         public virtual Round Round { get; set; }
-
+        // update members
         public void Update(Match match)
         {
             HomeScore = match.HomeScore;

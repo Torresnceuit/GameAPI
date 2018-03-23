@@ -14,7 +14,11 @@ namespace PlayersAPI.Controllers
     {
         ApplicationDbContext db = new ApplicationDbContext();
         private const int BYE = -1;
-
+        /// <summary>
+        /// Generate a rank for a tournament, return OK 200
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("generateRank/{id}")]
         public IHttpActionResult GenerateRank(string id)
@@ -129,7 +133,11 @@ namespace PlayersAPI.Controllers
 
             return Ok();
         }
-
+        /// <summary>
+        /// Draw new season fixtures
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("drawfixture/{id}")]
         public IHttpActionResult DrawFixture(string id)
@@ -220,7 +228,7 @@ namespace PlayersAPI.Controllers
             return Ok();
         }
         
-
+        // Generate Round Robin Algorithm
         public int[,] GenerateRoundRobin(int num_teams)
         {
 
@@ -230,6 +238,7 @@ namespace PlayersAPI.Controllers
                 return GenerateRoundRobinOdd(num_teams);
         }
 
+        // Round Robin For Odd number of teams
         public int[,] GenerateRoundRobinOdd(int num_teams)
         {
             int n2 = (int)((num_teams - 1) / 2);
@@ -272,6 +281,7 @@ namespace PlayersAPI.Controllers
             return results;
         }
 
+        // Rotate Array/List to the right by 1 element
         private void RotateArray(int[] teams)
         {
             int tmp = teams[teams.Length - 1];
@@ -296,7 +306,7 @@ namespace PlayersAPI.Controllers
                 list[i] = copy[index];
             }
         }
-
+        // Round Robin For Even number of teams
         public int[,] GenerateRoundRobinEven(int num_teams)
         {
             // Generate the result for one fewer teams.

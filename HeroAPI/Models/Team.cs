@@ -11,17 +11,15 @@ namespace PlayersAPI.Models
         public string Id { get; set; } = Guid.NewGuid().ToString();
         public string Name { get; set; }
         public string Logo { get; set; }
-        [ForeignKey("Tournament")]
+        [ForeignKey(nameof(Tournament))]
         public string TourId { get; set; }
         public virtual Tournament Tournament{get; set; }
-
+        // update team members
         public void Update(Team team)
         {
             Name = team.Name;
             Logo = team.Logo;
             TourId = team.TourId;
-            
-
         }
     }
 }
