@@ -26,6 +26,7 @@ namespace PlayersAPI.Models
         // update members
         public void Update(PlayerViewModel player)
         {
+            Id = player.Id;
             Name = player.Name;
             Age = player.Age;
             Position = string.Join(",",player.Positions);

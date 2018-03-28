@@ -80,7 +80,6 @@ namespace PlayersAPI.Controllers
         [Route("Update")]
         public PlayerViewModel Post(PlayerViewModel player)
         {
-            Console.WriteLine(player.Positions.ToString());
             // query for player exists or not
             var existPlayer = db.Players.Where(h => h.Id == player.Id).FirstOrDefault();
             if (existPlayer == null)

@@ -5,6 +5,7 @@ using System.Web;
 
 namespace PlayersAPI.Models
 {
+   
     public class PlayerViewModel
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
@@ -16,17 +17,16 @@ namespace PlayersAPI.Models
         public List<string> Positions { get; set; }
         public string Nationality { get; set; }
         public int Number { get; set; }
-
-
         public string TeamId { get; set; }
         public string Avatar { get; set; }
-        
+        // default constructor
+        public PlayerViewModel() { }
+
         public PlayerViewModel (Player player)
         {
             Id = player.Id;
             Name = player.Name;
-            Age = player.Age;
-            
+            Age = player.Age;          
             Positions = player.Position?.Split(',').ToList() ?? new List<string>();
             Nationality = player.Nationality;
             Number = player.Number;
